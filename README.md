@@ -69,15 +69,9 @@ Camunda membuat user administrator dari konfigurasi aplikasi. Pada konfigurasi l
 Gunakan PowerShell dari root repository:
 
 ```powershell
-Set-Location "C:\Users\Lenovo\Documents\.Program coding\RPL lanjut Semester 5\projekuts"
+Set-Location "<project-folder>"
 .\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
-```
-
-Jika port `8080` sedang digunakan, jalankan pada port alternatif:
-
-```powershell
-.\mvnw.cmd spring-boot:run "-Dspring-boot.run.arguments=--server.port=8081"
 ```
 
 Kemudian buka halaman `pengajuan-izin`, isi ketiga field, dan kirim formulir. Pengujian perilaku minimum:
@@ -105,7 +99,23 @@ http://localhost:8080/camunda/app/cockpit/
 
 Pada Cockpit, process definition pengajuan izin dapat ditinjau melalui daftar proses dan instance eksekusinya. Instance dengan `hari = 3` menunjukkan jalur persetujuan, sedangkan instance dengan `hari = 4` menunjukkan jalur penolakan.
 
-Repository ini saat ini tidak menyimpan file screenshot, sehingga README tidak menambahkan referensi gambar yang tidak dapat diverifikasi. Jika screenshot Cockpit atau hasil formulir akan didokumentasikan kemudian, file gambar perlu ditambahkan ke repository terlebih dahulu, lalu direferensikan menggunakan path relatif yang benar-benar tersedia.
+Empat screenshot evidence yang diharapkan untuk dokumentasi ini adalah:
+
+1. diagram BPMN pengajuan izin;
+2. hasil formulir dengan status `APPROVED`;
+3. hasil formulir dengan status `REJECTED`; dan
+4. daftar process definition pada Camunda Cockpit.
+
+File screenshot tersebut tidak tersedia sebagai file di checkout saat README ini diperbarui, sehingga tautan Markdown belum ditambahkan agar tidak menghasilkan path palsu. Setelah gambar ditempatkan di repository, gunakan direktori relatif, misalnya `docs/images/`, dan tambahkan referensi hanya untuk file yang benar-benar ada:
+
+```text
+docs/images/pengajuan-izin-bpmn.png
+docs/images/pengajuan-izin-approved.png
+docs/images/pengajuan-izin-rejected.png
+docs/images/camunda-cockpit-process-list.png
+```
+
+Pengguna perlu menambahkan empat file tersebut ke lokasi relatif yang disepakati sebelum README dapat memuat tautan screenshot yang valid.
 
 ## Conclusion
 
