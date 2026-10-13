@@ -46,4 +46,59 @@
     <bpmn:sequenceFlow id="Flow_approved_end" sourceRef="Task_approved" targetRef="End_approved"/>
     <bpmn:sequenceFlow id="Flow_rejected_end" sourceRef="Task_rejected" targetRef="End_rejected"/>
   </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_pengajuanIzin">
+    <bpmndi:BPMNPlane id="BPMNPlane_pengajuanIzin" bpmnElement="pengajuanIzin">
+      <bpmndi:BPMNShape id="StartEvent_pengajuan_di" bpmnElement="StartEvent_pengajuan">
+        <dc:Bounds x="160" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_validasi_di" bpmnElement="Task_validasi">
+        <dc:Bounds x="250" y="158" width="120" height="80"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_status_di" bpmnElement="Gateway_status" isMarkerVisible="true">
+        <dc:Bounds x="430" y="173" width="50" height="50"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_approved_di" bpmnElement="Task_approved">
+        <dc:Bounds x="560" y="80" width="120" height="80"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_rejected_di" bpmnElement="Task_rejected">
+        <dc:Bounds x="560" y="270" width="120" height="80"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_approved_di" bpmnElement="End_approved">
+        <dc:Bounds x="740" y="102" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_rejected_di" bpmnElement="End_rejected">
+        <dc:Bounds x="740" y="292" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_start_validate_di" bpmnElement="Flow_start_validate">
+        <di:waypoint x="196" y="198"/>
+        <di:waypoint x="250" y="198"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_validate_gateway_di" bpmnElement="Flow_validate_gateway">
+        <di:waypoint x="370" y="198"/>
+        <di:waypoint x="430" y="198"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_approved_di" bpmnElement="Flow_approved">
+        <di:waypoint x="455" y="173"/>
+        <di:waypoint x="455" y="120"/>
+        <di:waypoint x="560" y="120"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_rejected_di" bpmnElement="Flow_rejected">
+        <di:waypoint x="455" y="223"/>
+        <di:waypoint x="455" y="310"/>
+        <di:waypoint x="560" y="310"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_approved_end_di" bpmnElement="Flow_approved_end">
+        <di:waypoint x="680" y="120"/>
+        <di:waypoint x="740" y="120"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_rejected_end_di" bpmnElement="Flow_rejected_end">
+        <di:waypoint x="680" y="310"/>
+        <di:waypoint x="740" y="310"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </bpmn:definitions>
