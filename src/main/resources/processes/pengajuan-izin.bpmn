@@ -1,80 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0g60q53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.52.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
-  <bpmn:process id="pengajuanIzin" name="Pengajuan Izin Mahasiswa" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1">
-      <bpmn:outgoing>Flow_1k1vct3</bpmn:outgoing>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="Definitions_pengajuanIzin"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="pengajuanIzin" name="Pengajuan Izin Mahasiswa" isExecutable="true"
+                camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent_pengajuan">
+      <bpmn:outgoing>Flow_start_validate</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="Activity_0yl7g14" name="validasi">
-      <bpmn:incoming>Flow_0w5vqyf</bpmn:incoming>
-      <bpmn:outgoing>Flow_1ivt11c</bpmn:outgoing>
+    <bpmn:serviceTask id="Task_validasi" name="Validasi pengajuan"
+                      camunda:class="com.utsrpl.projekuts.workflow.LeaveRequestDelegate">
+      <bpmn:incoming>Flow_start_validate</bpmn:incoming>
+      <bpmn:outgoing>Flow_validate_gateway</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_status" name="Status pengajuan"
+                           default="Flow_rejected">
+      <bpmn:incoming>Flow_validate_gateway</bpmn:incoming>
+      <bpmn:outgoing>Flow_approved</bpmn:outgoing>
+      <bpmn:outgoing>Flow_rejected</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_approved" name="Izin disetujui">
+      <bpmn:incoming>Flow_approved</bpmn:incoming>
+      <bpmn:outgoing>Flow_approved_end</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:parallelGateway id="Gateway_1p0wsci">
-      <bpmn:incoming>Flow_1ivt11c</bpmn:incoming>
-      <bpmn:outgoing>Flow_12gvk0n</bpmn:outgoing>
-      <bpmn:outgoing>Flow_16lmx10</bpmn:outgoing>
-    </bpmn:parallelGateway>
-    <bpmn:task id="Activity_1axpj6v" name="di tolak">
-      <bpmn:incoming>Flow_16lmx10</bpmn:incoming>
+    <bpmn:task id="Task_rejected" name="Izin ditolak">
+      <bpmn:incoming>Flow_rejected</bpmn:incoming>
+      <bpmn:outgoing>Flow_rejected_end</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Activity_1imt08y" name="ya izin disetujui">
-      <bpmn:incoming>Flow_12gvk0n</bpmn:incoming>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_12gvk0n" sourceRef="Gateway_1p0wsci" targetRef="Activity_1imt08y" />
-    <bpmn:sequenceFlow id="Flow_16lmx10" sourceRef="Gateway_1p0wsci" targetRef="Activity_1axpj6v" />
-    <bpmn:task id="Activity_1skwql7" name="input pengajuan izin">
-      <bpmn:incoming>Flow_1k1vct3</bpmn:incoming>
-      <bpmn:outgoing>Flow_0w5vqyf</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_1k1vct3" sourceRef="StartEvent_1" targetRef="Activity_1skwql7" />
-    <bpmn:sequenceFlow id="Flow_0w5vqyf" sourceRef="Activity_1skwql7" targetRef="Activity_0yl7g14" />
-    <bpmn:sequenceFlow id="Flow_1ivt11c" sourceRef="Activity_0yl7g14" targetRef="Gateway_1p0wsci" />
+    <bpmn:endEvent id="End_approved">
+      <bpmn:incoming>Flow_approved_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="End_rejected">
+      <bpmn:incoming>Flow_rejected_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_start_validate" sourceRef="StartEvent_pengajuan" targetRef="Task_validasi"/>
+    <bpmn:sequenceFlow id="Flow_validate_gateway" sourceRef="Task_validasi" targetRef="Gateway_status"/>
+    <bpmn:sequenceFlow id="Flow_approved" name="APPROVED" sourceRef="Gateway_status" targetRef="Task_approved">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${status == 'APPROVED'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_rejected" name="REJECTED" sourceRef="Gateway_status" targetRef="Task_rejected"/>
+    <bpmn:sequenceFlow id="Flow_approved_end" sourceRef="Task_approved" targetRef="End_approved"/>
+    <bpmn:sequenceFlow id="Flow_rejected_end" sourceRef="Task_rejected" targetRef="End_rejected"/>
   </bpmn:process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="pengajuanIzin">
-      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
-        <dc:Bounds x="182" y="162" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1skwql7_di" bpmnElement="Activity_1skwql7">
-        <dc:Bounds x="270" y="140" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0yl7g14_di" bpmnElement="Activity_0yl7g14">
-        <dc:Bounds x="410" y="140" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1p0wsci_di" bpmnElement="Gateway_1p0wsci">
-        <dc:Bounds x="575" y="155" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1axpj6v_di" bpmnElement="Activity_1axpj6v">
-        <dc:Bounds x="640" y="220" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1imt08y_di" bpmnElement="Activity_1imt08y">
-        <dc:Bounds x="640" y="70" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_12gvk0n_di" bpmnElement="Flow_12gvk0n">
-        <di:waypoint x="600" y="155" />
-        <di:waypoint x="600" y="110" />
-        <di:waypoint x="640" y="110" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16lmx10_di" bpmnElement="Flow_16lmx10">
-        <di:waypoint x="600" y="205" />
-        <di:waypoint x="600" y="260" />
-        <di:waypoint x="640" y="260" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1k1vct3_di" bpmnElement="Flow_1k1vct3">
-        <di:waypoint x="218" y="180" />
-        <di:waypoint x="270" y="180" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0w5vqyf_di" bpmnElement="Flow_0w5vqyf">
-        <di:waypoint x="370" y="180" />
-        <di:waypoint x="410" y="180" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ivt11c_di" bpmnElement="Flow_1ivt11c">
-        <di:waypoint x="510" y="180" />
-        <di:waypoint x="575" y="180" />
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
 </bpmn:definitions>
