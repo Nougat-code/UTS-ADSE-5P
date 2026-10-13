@@ -99,23 +99,31 @@ http://localhost:8080/camunda/app/cockpit/
 
 Pada Cockpit, process definition pengajuan izin dapat ditinjau melalui daftar proses dan instance eksekusinya. Instance dengan `hari = 3` menunjukkan jalur persetujuan, sedangkan instance dengan `hari = 4` menunjukkan jalur penolakan.
 
-Empat screenshot evidence yang diharapkan untuk dokumentasi ini adalah:
+Evidence visual yang disimpan di repository:
 
-1. diagram BPMN pengajuan izin;
-2. hasil formulir dengan status `APPROVED`;
-3. hasil formulir dengan status `REJECTED`; dan
-4. daftar process definition pada Camunda Cockpit.
+### Diagram BPMN
 
-File screenshot tersebut tidak tersedia sebagai file di checkout saat README ini diperbarui, sehingga tautan Markdown belum ditambahkan agar tidak menghasilkan path palsu. Setelah gambar ditempatkan di repository, gunakan direktori relatif, misalnya `docs/images/`, dan tambahkan referensi hanya untuk file yang benar-benar ada:
+![Diagram BPMN pengajuan izin](docs/images/bpmn-pengajuan-izin.png)
 
-```text
-docs/images/pengajuan-izin-bpmn.png
-docs/images/pengajuan-izin-approved.png
-docs/images/pengajuan-izin-rejected.png
-docs/images/camunda-cockpit-process-list.png
-```
+Diagram memperlihatkan start event, service task validasi, exclusive gateway, serta jalur `APPROVED` dan `REJECTED` menuju end event.
 
-Pengguna perlu menambahkan empat file tersebut ke lokasi relatif yang disepakati sebelum README dapat memuat tautan screenshot yang valid.
+### Hasil `APPROVED`
+
+![Hasil pengajuan disetujui](docs/images/hasil-approved.png)
+
+Contoh pengajuan dengan jumlah hari yang memenuhi aturan persetujuan dan menghasilkan status `APPROVED`.
+
+### Hasil `REJECTED`
+
+![Hasil pengajuan ditolak](docs/images/hasil-rejected.png)
+
+Contoh pengajuan dengan jumlah hari yang melebihi batas dan menghasilkan status `REJECTED`.
+
+### Camunda Cockpit
+
+![Daftar proses pada Camunda Cockpit](docs/images/camunda-cockpit.png)
+
+Cockpit memperlihatkan dua process definition yang berhasil dideploy, yaitu `helloWorld` dan `pengajuanIzin`.
 
 ## Conclusion
 
